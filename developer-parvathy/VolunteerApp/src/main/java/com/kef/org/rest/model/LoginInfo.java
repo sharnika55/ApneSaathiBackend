@@ -6,7 +6,7 @@ public class LoginInfo {
 		
 		// TODO Auto-generated constructor stub
 	}
-	public LoginInfo(String statusCode, String message, String volunteerId) {
+	public LoginInfo(String statusCode, String message, Integer volunteerId) {
 		super();
 		this.statusCode = statusCode;
 		this.message = message;
@@ -25,13 +25,20 @@ public class LoginInfo {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public String getVolunteerId() {
+	public Integer getVolunteerId() {
 		return volunteerId;
 	}
-	public void setVolunteerId(String volunteerId) {
+	public void setVolunteerId(Integer volunteerId) {
 		this.volunteerId = volunteerId;
 	}
 	String message;
-	String volunteerId;
+	Integer volunteerId;
+	Integer LoginOTP;
+	public Integer getLoginOTP() {
+		return LoginOTP;
+	}
+	public void setLoginOTP(Integer loginOTP) {
+		LoginOTP = loginOTP;
+	}
 
 }

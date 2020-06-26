@@ -1,21 +1,81 @@
 package com.kef.org.rest.model;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-public class Volunteer {
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
+import javax.persistence.Column;
+
+
+@Entity
+@Table(name = "volunteer")
+@NamedQueries({
+@NamedQuery(name = "Volunteer.fetchByphoneNumber",
+query = "SELECT v.volunteerId FROM Volunteer v WHERE v.phoneNo =?1 "
+),
+@NamedQuery(name = "Volunteer.fetchVolunteerDetails",
+query = "SELECT v FROM Volunteer v WHERE v.phoneNo =?1 "
+)
+}) 
+public class Volunteer  {
+	
+
+
+	@Id
+	  @GeneratedValue(strategy=GenerationType.AUTO) 
+	  @Column(name = "IDVOLUNTEER")
+	  
+private Integer volunteerId;
    
+	
+	@Column(name="MOBILENO",nullable = false, unique = true)
+	  private String phoneNo;
+	
+	@Column(name="FIRSTNAME")
+	private String firstName;
+
+	@Column(name="LASTNAME")
+	private String lastName;
+	
+	@Column(name="EMAIL")
+	private String email;
+	
+	@Column(name="GENDER")
+	private char gender;
+	
+	@Column(name="STATE")
+	private String State;
+	
+	@Column(name="DISTRICT")
+	private String District;
+	
+	@Column(name="BLOCK_NAME")
+	private String Block;
+	
+	@Column(name="ADDRESS")
+	private String Address;
+	
+	@Column(name="VILLAGE")
+	private String Village;
 
 
-    public Volunteer(String volunteerId, String phoneNo) {
-		super();
-		this.volunteerId = volunteerId;
-		this.phoneNo = phoneNo;
-	}
 
+	@Column(name="ASSIGNED_TO_FELLOW")
+	private String assignedtoFellow;
+	
+	@Column(name="ASSIGNED_TO_FELLOW_CONTACT")
+	private String assignedtoFellowContact;
+	
+  
 
-	public String getVolunteerId() {
+	public Integer getVolunteerId() {
 		return volunteerId;
 	}
-	public void setVolunteerId(String volunteerId) {
+	public void setVolunteerId(Integer volunteerId) {
 		this.volunteerId = volunteerId;
 	}
 	public String getphoneNo() {
@@ -26,10 +86,112 @@ public class Volunteer {
 	}
 
 
-	private String volunteerId;
-    private String phoneNo;
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	public char getGender() {
+		return gender;
+	}
+
+
+	public void setGender(char gender) {
+		this.gender = gender;
+	}
+
+
+	public String getState() {
+		return State;
+	}
+
+
+	public void setState(String state) {
+		State = state;
+	}
+
+
+	public String getDistrict() {
+		return District;
+	}
+
+
+	public void setDistrict(String district) {
+		District = district;
+	}
+
+
+	public String getBlock() {
+		return Block;
+	}
+
+
+	public void setBlock(String block) {
+		Block = block;
+	}
+
+
+	public String getAddress() {
+		return Address;
+	}
+
+
+	public void setAddress(String address) {
+		Address = address;
+	}
+
+
+	public String getVillage() {
+		return Village;
+	}
+  
+	public void setVillage(String village) {
+		Village = village;
+	}
     
-    
-   
-   
+	public String getAssignedtoFellow() {
+		return assignedtoFellow;
+	}
+	public void setAssignedtoFellow(String assignedtoFellow) {
+		this.assignedtoFellow = assignedtoFellow;
+	}
+	public String getAssignedtoFellowContact() {
+		return assignedtoFellowContact;
+	}
+	public void setAssignedtoFellowContact(String assignedtoFellowContact) {
+		this.assignedtoFellowContact = assignedtoFellowContact;
+		
+		
+		
+	}
+	
+
+	
+	
+	
 }
