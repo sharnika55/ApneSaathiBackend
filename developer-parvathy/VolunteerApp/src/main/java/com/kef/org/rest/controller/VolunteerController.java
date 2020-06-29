@@ -3,6 +3,7 @@ package com.kef.org.rest.controller;
 
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.kef.org.rest.model.LoginInfo;
 import com.kef.org.rest.model.Volunteer;
-import com.kef.org.rest.model.SeniorCitizen;
-import com.kef.org.rest.repository.SeniorCitizenRepository;
+import com.kef.org.rest.model.VolunteerAssignment;
+import com.kef.org.rest.repository.MedicalandGreivanceRepository;
+import com.kef.org.rest.repository.VolunteerAssignmentRepository;
+import com.kef.org.rest.repository.VolunteerRepository;
+import com.kef.org.rest.service.MedicalandGreivanceService;
 import com.kef.org.rest.service.VolunteerService;
 
 @RestController
@@ -34,8 +38,19 @@ public class VolunteerController
     @Autowired
     VolunteerService volunteerService; 
     
+    
+    
     @Autowired
-	private SeniorCitizenRepository seniorcitizenRespository;
+    MedicalandGreivanceService medicalandgreivanceservice; 
+    
+    @Autowired
+	private MedicalandGreivanceRepository seniorcitizenRespository;
+    
+    @Autowired
+   	private VolunteerAssignmentRepository volunteerassignmentRespository;
+    
+    @Autowired
+	private VolunteerRepository volunteerRespository;
 	
    
     @RequestMapping(value = "/LoginVolunteer", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
@@ -67,24 +82,54 @@ public class VolunteerController
     {
     		String phoneNo = volunteer.getphoneNo();
     		Volunteer v1 = volunteerService.findvolunteerDetails(phoneNo);
-    		if(v1.getVolunteerId().equals(null))
+    		if(v1.getIdvolunteer().equals(null))
     		{
-    		 return new ResponseEntity<Volunteer>(v1, HttpStatus.OK);
+    		 return new ResponseEntity<Volunteer>(v1, HttpStatus.CONFLICT);
     		}
     		else {
-    			return new ResponseEntity<Volunteer>(v1, HttpStatus.CONFLICT);
+    			return new ResponseEntity<Volunteer>(v1, HttpStatus.OK);
     		}
     		
     	
     	
     }
+
     
-    @RequestMapping(value = "/NewSrCitizenRegistration", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
-    public ResponseEntity<SeniorCitizen>  registerNewSrCitizen(@RequestBody SeniorCitizen seniorcitizen)
+    
+    @RequestMapping(value = "/loadDashboard", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+    public Volunteer  loadVolunteerDashboard(@RequestBody Volunteer volunteer)
     {
-    		
-    	
-    	 return new ResponseEntity<SeniorCitizen>(seniorcitizenRespository.save(seniorcitizen), HttpStatus.OK);	
+    
+    	Optional<Volunteer> v1	= volunteerRespository.findById(volunteer.getIdvolunteer());
+    	return v1.get();
+}
+    
+    @RequestMapping(value = "/seniorcitizenDetails", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+    public VolunteerAssignment  getseniorcitizendetails(@RequestBody VolunteerAssignment volunteerassignement)
+    {
+    
+    	Optional<VolunteerAssignment> v1	= volunteerassignmentRespository.findById(volunteerassignement.getCallid());
+    	return v1.get();
     }
+    
+    @RequestMapping(value = "/saveForm", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+    public ResponseEntity  saveFeedbackForm(@RequestBody VolunteerAssignment volunteerassignement)
+    {
+    	
+    	
+    	medicalandgreivanceservice.processformData(volunteerassignement);
+    	return new ResponseEntity(HttpStatus.OK);
    
+}
+    
+    @RequestMapping(value = "/registerNewSrCitizen", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+    public ResponseEntity  registerNewSrCitizen(@RequestBody VolunteerAssignment volunteerassignement)
+    {
+    	
+    	
+    	volunteerassignmentRespository.save(volunteerassignement);
+    	return new ResponseEntity(HttpStatus.OK);
+   
+}
+
 }

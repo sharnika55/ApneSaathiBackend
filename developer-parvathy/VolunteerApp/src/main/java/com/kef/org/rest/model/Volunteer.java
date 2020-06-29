@@ -4,18 +4,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.OneToMany;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 
 
 @Entity
 @Table(name = "volunteer")
 @NamedQueries({
 @NamedQuery(name = "Volunteer.fetchByphoneNumber",
-query = "SELECT v.volunteerId FROM Volunteer v WHERE v.phoneNo =?1 "
+query = "SELECT v.idvolunteer FROM Volunteer v WHERE v.phoneNo =?1 "
 ),
 @NamedQuery(name = "Volunteer.fetchVolunteerDetails",
 query = "SELECT v FROM Volunteer v WHERE v.phoneNo =?1 "
@@ -29,7 +32,7 @@ public class Volunteer  {
 	  @GeneratedValue(strategy=GenerationType.AUTO) 
 	  @Column(name = "IDVOLUNTEER")
 	  
-private Integer volunteerId;
+private Integer idvolunteer;
    
 	
 	@Column(name="MOBILENO",nullable = false, unique = true)
@@ -70,14 +73,25 @@ private Integer volunteerId;
 	@Column(name="ASSIGNED_TO_FELLOW_CONTACT")
 	private String assignedtoFellowContact;
 	
-  
+	
+ @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+ @JoinColumn(name = "idvolunteer")
+   private List <VolunteerAssignment> volunteercallList;
+	
 
-	public Integer getVolunteerId() {
-		return volunteerId;
-	}
-	public void setVolunteerId(Integer volunteerId) {
-		this.volunteerId = volunteerId;
-	}
+
+	public Integer getIdvolunteer() {
+	return idvolunteer;
+}
+public void setIdvolunteer(Integer idvolunteer) {
+	this.idvolunteer = idvolunteer;
+}
+public List<VolunteerAssignment> getVolunteercallList() {
+	return volunteercallList;
+}
+public void setVolunteercallList(List<VolunteerAssignment> volunteercallList) {
+	this.volunteercallList = volunteercallList;
+}
 	public String getphoneNo() {
 		return phoneNo;
 	}
