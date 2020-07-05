@@ -1,11 +1,13 @@
 package com.kef.org.rest.service;
 
 import java.util.Iterator;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.kef.org.rest.model.VolunteerAssignment;
 import com.kef.org.rest.controller.VolunteerController;
@@ -23,19 +25,24 @@ public class MedicalandGreivanceService {
 	@Autowired
 	private VolunteerAssignmentRepository volunteerassignmentrespository;
 	
-	
+
 	
 	private MedicalandGreivance medicalandgreivance;
 	
+	Integer idgreivance;
+	
 	
 	public static final Logger logger = LoggerFactory.getLogger(MedicalandGreivanceService.class);
-	
-	public void processformData(VolunteerAssignment volunteerassignement)
+	  
+	@Transactional
+	public Integer processformData(VolunteerAssignment volunteerassignement)
 	{
 		
 		Integer callstatuscode;
 		Integer callstatussubcode;
-		char talkedwith;
+	
+		
+		String talkedwith;
 		
 		
 		callstatuscode = volunteerassignement.getCallstatusCode();
@@ -48,70 +55,101 @@ public class MedicalandGreivanceService {
 	//	volunteerassignmentrespository.save(volunteerassignement);
 		
 		if(callstatuscode.equals(2) && callstatussubcode.equals(5))
-		{
+		{   
+			
+			
 			VolunteerAssignment va1 = volunteerassignmentrespository.findById(volunteerassignement.getCallid()).get(); 
 			va1.setCallstatusCode(volunteerassignement.getCallstatusCode());
 			va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
+			va1.setTalkedwith(volunteerassignement.getTalkedwith());
 			
 			
+			volunteerassignmentrespository.save(va1);
 			
-			logger.info("Reached here11111"); 
-			if(talkedwith == 'C') 
-			{
-				
-				volunteerassignmentrespository.save(va1);
-				
-			//	va1.setMedicalandgreivance(volunteerassignement.getMedicalandgreivance());
-				
-				
-				
-				
-				  logger.info("Reached here22222222"); Iterator<MedicalandGreivance>
-				  medicalandgreivanceIterator =
-				  volunteerassignement.getMedicalandgreivance().iterator();
-				  
-				  while(medicalandgreivanceIterator.hasNext()) { medicalandgreivance =
-				  medicalandgreivanceIterator.next();
-				  
-				  medicalandgreivancerespository.save(medicalandgreivance);
-				  
-				  }
-				 
+			 Iterator<MedicalandGreivance> medicalandgreivanceIterator =
+					  volunteerassignement.getMedicalandgreivance().iterator();
+					  
+					  while(medicalandgreivanceIterator.hasNext()) { 
+						  Integer idgreivancelocal;
+					  medicalandgreivance =  medicalandgreivanceIterator.next();
+					  
+					  idgreivance =	  medicalandgreivancerespository.save(medicalandgreivance).getIdgrevance();
+					 
+					 
+					  }
+					 
+					
+					  return 	idgreivance;
+
+						/*
+						 * if(talkedwith.equals("Senior Citizen")) {
+						 * 
+						 * //va1.setMedicalandgreivance(volunteerassignement.getMedicalandgreivance());
+						 * volunteerassignmentrespository.save(va1);
+						 * 
+						 * Iterator<MedicalandGreivance> medicalandgreivanceIterator =
+						 * volunteerassignement.getMedicalandgreivance().iterator();
+						 * 
+						 * while(medicalandgreivanceIterator.hasNext()) { Integer idgreivancelocal;
+						 * medicalandgreivance = medicalandgreivanceIterator.next();
+						 * 
+						 * idgreivance =
+						 * medicalandgreivancerespository.save(medicalandgreivance).getIdgrevance();
+						 * 
+						 * 
+						 * }
+						 * 
+						 * 
+						 * return idgreivance;
+						 * 
+						 * }else {
+						 * 
+						 * 
+						 * 
+						 * // va1.setNamesrcitizen(volunteerassignement.getNamesrcitizen()); //
+						 * va1.setAgesrcitizen(volunteerassignement.getAgesrcitizen()); //
+						 * va1.setGendersrcitizen(volunteerassignement.getGendersrcitizen()); //
+						 * va1.setPhonenosrcitizen(volunteerassignement.getPhonenosrcitizen());
+						 * //.setAddresssrcitizen(volunteerassignement.getAddresssrcitizen());
+						 * 
+						 * //va1.setMedicalandgreivance(volunteerassignement.getMedicalandgreivance());
+						 * volunteerassignmentrespository.save(va1);
+						 * 
+						 * 
+						 * Iterator<MedicalandGreivance> medicalandgreivanceIterator =
+						 * volunteerassignement.getMedicalandgreivance().iterator();
+						 * 
+						 * while(medicalandgreivanceIterator.hasNext()) { Integer idgreivancelocal;
+						 * medicalandgreivance = medicalandgreivanceIterator.next();
+						 * 
+						 * idgreivance =
+						 * medicalandgreivancerespository.save(medicalandgreivance).getIdgrevance();
+						 * 
+						 * 
+						 * } return idgreivance;
+						 * 
+						 * 
+						 * }
+						 */
 			}else {
-				logger.info("Reached here33333333333333333333"); 
-				va1.setTalkedwith(volunteerassignement.getTalkedwith());
-				
-				volunteerassignmentrespository.save(va1);
-				
-				Iterator<MedicalandGreivance>
-				  medicalandgreivanceIterator =
-				  volunteerassignement.getMedicalandgreivance().iterator();
-				  
-				  while(medicalandgreivanceIterator.hasNext()) { medicalandgreivance =
-				  medicalandgreivanceIterator.next();
-				  
-				  medicalandgreivancerespository.save(medicalandgreivance);
-				  
-				  }
-				
-				 
-				
-			}
-			}else {
-				logger.info("Reached here4444444444444444444444"); 
+
 				VolunteerAssignment va1 = volunteerassignmentrespository.findById(volunteerassignement.getCallid()).get(); 
 				va1.setCallstatusCode(volunteerassignement.getCallstatusCode());
 				va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
 				
 				volunteerassignmentrespository.save(va1);
+			
+				return -1;
+				
+				  
+				  }
+				
+				
 				
 			}
 		
 		}
 		
-	}
-		
-	
 
 	
 	

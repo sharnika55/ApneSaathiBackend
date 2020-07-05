@@ -29,7 +29,7 @@ public class Volunteer  {
 
 
 	@Id
-	  @GeneratedValue(strategy=GenerationType.AUTO) 
+	  @GeneratedValue(strategy=GenerationType.IDENTITY) 
 	  @Column(name = "IDVOLUNTEER")
 	  
 private Integer idvolunteer;
@@ -48,7 +48,7 @@ private Integer idvolunteer;
 	private String email;
 	
 	@Column(name="GENDER")
-	private char gender;
+	private String gender;
 	
 	@Column(name="STATE")
 	private String State;
@@ -78,7 +78,6 @@ private Integer idvolunteer;
  @JoinColumn(name = "idvolunteer")
    private List <VolunteerAssignment> volunteercallList;
 	
-
 
 	public Integer getIdvolunteer() {
 	return idvolunteer;
@@ -130,12 +129,12 @@ public void setVolunteercallList(List<VolunteerAssignment> volunteercallList) {
 	}
 
 
-	public char getGender() {
+	public String getGender() {
 		return gender;
 	}
 
 
-	public void setGender(char gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 

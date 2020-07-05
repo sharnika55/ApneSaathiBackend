@@ -1,17 +1,14 @@
 package com.kef.org.rest.model;
 
+import com.kef.org.rest.model.MedicalandGreivance;
+
 public class LoginInfo { 
 	
 	public LoginInfo() {
 		
 		// TODO Auto-generated constructor stub
 	}
-	public LoginInfo(String statusCode, String message, Integer volunteerId) {
-		super();
-		this.statusCode = statusCode;
-		this.message = message;
-		this.volunteerId = volunteerId;
-	}
+
 	String statusCode;
 	public String getStatusCode() {
 		return statusCode;
@@ -34,6 +31,37 @@ public class LoginInfo {
 	String message;
 	Integer volunteerId;
 	Integer LoginOTP;
+
+
+	public Integer getIdgrevance() {
+		return idgrevance;
+	}
+	public void setIdgrevance(Integer idgrevance) {
+		this.idgrevance = idgrevance;
+	}
+
+	Integer idgrevance;
+	public Volunteer getVolunteer() {
+		return volunteer;
+	}
+	public void setVolunteer(Volunteer volunteer) {
+		this.volunteer = volunteer;
+	}
+	public VolunteerAssignment getVolunteerassignment() {
+		return volunteerassignment;
+	}
+	public void setVolunteerassignment(VolunteerAssignment volunteerassignment) {
+		this.volunteerassignment = volunteerassignment;
+	}
+	Volunteer volunteer;
+	VolunteerAssignment volunteerassignment;
+	MedicalandGreivance  medicalandgreivance;
+	public MedicalandGreivance getMedicalandgreivance() {
+		return medicalandgreivance;
+	}
+	public void setMedicalandgreivance(MedicalandGreivance medicalandgreivance) {
+		this.medicalandgreivance = medicalandgreivance;
+	}
 	public Integer getLoginOTP() {
 		return LoginOTP;
 	}

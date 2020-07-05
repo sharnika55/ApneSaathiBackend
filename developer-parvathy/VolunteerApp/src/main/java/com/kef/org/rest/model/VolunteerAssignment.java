@@ -11,7 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class VolunteerAssignment {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO) 
+	@GeneratedValue(strategy=GenerationType.IDENTITY) 
 	@Column(name = "CALL_ID",nullable =false)
     private Integer callid;
 
@@ -41,44 +41,44 @@ public class VolunteerAssignment {
 	@Column(name = "phoneno_srcitizen",nullable =false)
 	private String phonenosrcitizen;
 	
-	@Column(name = "age_srcitizen")
+	@Column(name = "age_srcitizen",nullable =false)
 	private Integer agesrcitizen;
 	
-	@Column(name = "gender_srcitizen")
-	private char gendersrcitizen;
+	@Column(name = "gender_srcitizen",nullable =false)
+	private String gendersrcitizen;
 	
-	@Column(name = "address_srcitizen")
+	@Column(name = "address_srcitizen",nullable =false)
 	private String addresssrcitizen;
 	
-	@Column(name = "email_srcitizen")
+	@Column(name = "email_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String emailsrcitizen;
 	
-	@Column(name = "state_srcitizen")
+	@Column(name = "state_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String statesrcitizen;
 	
-	@Column(name = "district_srcitizen")
+	@Column(name = "district_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String districtsrcitizen;
 	
-	@Column(name = "blockname_srcitizen")
+	@Column(name = "blockname_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String blocknamesrcitizen;
 	
-	@Column(name = "village_srcitizen")
+	@Column(name = "village_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String villagesrcitizen;
 	
-	@Column(name = "call_status_code")
+	@Column(name = "call_status_code",columnDefinition = "integer default 1")
 	private Integer callstatusCode;
 	
-	@Column(name = "call_status_subcode")
+	@Column(name = "call_status_subcode",columnDefinition = "integer default 1")
 	private Integer callstatussubCode;
 	
-	@Column(name = "talked_with")
-	private char talkedwith;
+	@Column(name = "talked_with",columnDefinition ="varchar(255) default ''")
+	private String talkedwith;
 	
-	public char getTalkedwith() {
+	public String getTalkedwith() {
 		return talkedwith;
 	}
 
-	public void setTalkedwith(char talkedwith) {
+	public void setTalkedwith(String talkedwith) {
 		this.talkedwith = talkedwith;
 	}
 
@@ -90,13 +90,13 @@ public class VolunteerAssignment {
 		this.medicalandgreivance = medicalandgreivance;
 	}
 
-	@Column(name = "assigned_by_member")
+	@Column(name = "assigned_by_member",columnDefinition ="varchar(255) default ''")
 	private String assignedbyMember;
 	
-	@Column(name = "remarks_after_call")
+	@Column(name = "remarks_after_call",columnDefinition ="varchar(255) default ''")
 	private String remarks;
 	
-	@Column(name = "loggeddatetime")
+	@Column(name = "loggeddatetime",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime loggeddateTime;
 	
 	
@@ -104,6 +104,7 @@ public class VolunteerAssignment {
 	 @JoinColumn(name = "CALL_ID")
 	 private List <MedicalandGreivance> medicalandgreivance;
 	 
+
 
 	public Integer getCallid() {
 		return callid;
@@ -137,11 +138,11 @@ public class VolunteerAssignment {
 		this.agesrcitizen = agesrcitizen;
 	}
 
-	public char getGendersrcitizen() {
+	public String getGendersrcitizen() {
 		return gendersrcitizen;
 	}
 
-	public void setGendersrcitizen(char gendersrcitizen) {
+	public void setGendersrcitizen(String gendersrcitizen) {
 		this.gendersrcitizen = gendersrcitizen;
 	}
 
