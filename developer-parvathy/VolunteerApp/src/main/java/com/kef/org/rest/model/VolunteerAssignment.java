@@ -65,11 +65,16 @@ public class VolunteerAssignment {
 	@Column(name = "village_srcitizen",columnDefinition ="varchar(255) default ''")
 	private String villagesrcitizen;
 	
-	@Column(name = "call_status_code",columnDefinition = "integer default 1")
+	
+	//  2.Not Picked 3.Not Reachable 4.Number Busy 5.Call Later 6.Call Dropped  7.Wrong Number 8.Number doesn't exist 9.Disconnected 10.Connected
+	
+	@Column(name = "call_status_code",columnDefinition = "integer default 2")
 	private Integer callstatusCode;
 	
-	@Column(name = "call_status_subcode",columnDefinition = "integer default 1")
-	private Integer callstatussubCode;
+	/*
+	 * @Column(name = "call_status_subcode",columnDefinition = "integer default 1")
+	 * private Integer callstatussubCode;
+	 */
 	
 	@Column(name = "talked_with",columnDefinition ="varchar(255) default ''")
 	private String talkedwith;
@@ -202,13 +207,12 @@ public class VolunteerAssignment {
 		this.callstatusCode = callstatusCode;
 	}
 
-	public Integer getCallstatussubCode() {
-		return callstatussubCode;
-	}
-
-	public void setCallstatussubCode(Integer callstatussubCode) {
-		this.callstatussubCode = callstatussubCode;
-	}
+	/*
+	 * public Integer getCallstatussubCode() { return callstatussubCode; }
+	 * 
+	 * public void setCallstatussubCode(Integer callstatussubCode) {
+	 * this.callstatussubCode = callstatussubCode; }
+	 */
 
 	public String getAssignedbyMember() {
 		return assignedbyMember;

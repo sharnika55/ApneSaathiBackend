@@ -1,5 +1,7 @@
 package com.kef.org.rest.model;
 
+import java.util.List;
+
 import com.kef.org.rest.model.MedicalandGreivance;
 
 public class LoginInfo { 
@@ -56,6 +58,14 @@ public class LoginInfo {
 	Volunteer volunteer;
 	VolunteerAssignment volunteerassignment;
 	MedicalandGreivance  medicalandgreivance;
+	List<GreivanceTracking> greivanceTrackingList;
+	
+	public List<GreivanceTracking> getGreivanceTrackingList() {
+		return greivanceTrackingList;
+	}
+	public void setGreivanceTrackingList(List<GreivanceTracking> greivanceTrackingList) {
+		this.greivanceTrackingList = greivanceTrackingList;
+	}
 	public MedicalandGreivance getMedicalandgreivance() {
 		return medicalandgreivance;
 	}

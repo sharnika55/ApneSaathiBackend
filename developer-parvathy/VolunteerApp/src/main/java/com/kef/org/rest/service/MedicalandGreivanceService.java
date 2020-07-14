@@ -1,7 +1,9 @@
 package com.kef.org.rest.service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kef.org.rest.model.VolunteerAssignment;
-import com.kef.org.rest.controller.VolunteerController;
+import com.kef.org.rest.model.GreivanceTracking;
 import com.kef.org.rest.model.MedicalandGreivance;
+import com.kef.org.rest.model.VolunteerAssignment;
+import com.kef.org.rest.repository.GreivanceTrackingRepository;
 import com.kef.org.rest.repository.MedicalandGreivanceRepository;
 import com.kef.org.rest.repository.VolunteerAssignmentRepository;
-import com.kef.org.rest.repository.VolunteerRepository;
 
 @Service("medicalandgreivanceservice")
 public class MedicalandGreivanceService {
@@ -25,11 +27,15 @@ public class MedicalandGreivanceService {
 	@Autowired
 	private VolunteerAssignmentRepository volunteerassignmentrespository;
 	
+	@Autowired
+	private GreivanceTrackingRepository greivanceTrackingRepository;
 
 	
 	private MedicalandGreivance medicalandgreivance;
+	private GreivanceTracking greivanceTrackingDB;
 	
 	Integer idgreivance;
+	Integer idgreivanceTracking;
 	
 	
 	public static final Logger logger = LoggerFactory.getLogger(MedicalandGreivanceService.class);
@@ -39,14 +45,16 @@ public class MedicalandGreivanceService {
 	{
 		
 		Integer callstatuscode;
-		Integer callstatussubcode;
+		//Integer callstatussubcode;
+		GreivanceTracking greivanceTracking = null;
+		List<GreivanceTracking> greivanceTrackingList = null;
 	
 		
 		String talkedwith;
 		
 		
 		callstatuscode = volunteerassignement.getCallstatusCode();
-		callstatussubcode = volunteerassignement.getCallstatussubCode();
+		//callstatussubcode = volunteerassignement.getCallstatussubCode();
 		talkedwith = volunteerassignement.getTalkedwith();
 		
 	
@@ -54,13 +62,13 @@ public class MedicalandGreivanceService {
 		
 	//	volunteerassignmentrespository.save(volunteerassignement);
 		
-		if(callstatuscode.equals(2) && callstatussubcode.equals(5))
+		if(callstatuscode.equals(10) )
 		{   
 			
 			
 			VolunteerAssignment va1 = volunteerassignmentrespository.findById(volunteerassignement.getCallid()).get(); 
 			va1.setCallstatusCode(volunteerassignement.getCallstatusCode());
-			va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
+			//va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
 			va1.setTalkedwith(volunteerassignement.getTalkedwith());
 			
 			
@@ -72,11 +80,166 @@ public class MedicalandGreivanceService {
 					  while(medicalandgreivanceIterator.hasNext()) { 
 						  Integer idgreivancelocal;
 					  medicalandgreivance =  medicalandgreivanceIterator.next();
+					  medicalandgreivance.setCreatedDate(LocalDateTime.now());
+					  medicalandgreivance.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+					  medicalandgreivance.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
 					  
 					  idgreivance =	  medicalandgreivancerespository.save(medicalandgreivance).getIdgrevance();
-					 
-					 
+					  
+					  if("YES".equalsIgnoreCase(  medicalandgreivance.getLackofessentialservices()) || "Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired())) {
+						  greivanceTrackingList = new ArrayList<>();
+						  
+						  if(4 != medicalandgreivance.getFoodshortage()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of food");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getFoodshortage() ? "RAISED" : 
+								  2 == medicalandgreivance.getFoodshortage() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getAceesstobankingissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of access to banking services");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getAceesstobankingissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getAceesstobankingissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getHygieneissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of hygiene and sanitation");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getHygieneissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getHygieneissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getMedicineshortage()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of medicine");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getMedicineshortage() ? "RAISED" : 
+								  2 == medicalandgreivance.getMedicineshortage() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getPhoneandinternetissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Phone & Internet services");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getPhoneandinternetissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getPhoneandinternetissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getSafetyissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of Safety");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getSafetyissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getSafetyissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getUtilitysupplyissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of utilities supply");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getUtilitysupplyissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getUtilitysupplyissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+							  
+						  }
+						  
+						  if(4 != medicalandgreivance.getEmergencyserviceissue()) {
+							  greivanceTracking = new GreivanceTracking();
+							  greivanceTracking.setCallid(medicalandgreivance.getCallid());
+							  greivanceTracking.setGendersrcitizen(volunteerassignement.getGendersrcitizen());
+							  greivanceTracking.setIdgrevance(idgreivance);
+							  greivanceTracking.setGreivanceType("Lack of access to emergency services");
+							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
+							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
+							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "High" : "Low");
+							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setStatus(1 == medicalandgreivance.getEmergencyserviceissue() ? "RAISED" : 
+								  2 == medicalandgreivance.getEmergencyserviceissue() ? "UNDER REVIEW" : "RESOLVED");
+							  greivanceTrackingList.add(greivanceTracking);
+						  }
+						  
+						  
+						  if(!greivanceTrackingList.isEmpty() && null != greivanceTrackingList) {
+						  Iterator<GreivanceTracking> greivanceTrackingIterator =
+								  greivanceTrackingList.iterator(); 
+						  while(greivanceTrackingIterator.hasNext()) {
+						  greivanceTrackingDB =  greivanceTrackingIterator.next();
+						  
+						  idgreivanceTracking =	  greivanceTrackingRepository.save(greivanceTrackingDB).getTrackingId();
+						  }
+						  }
+						  
+						  
 					  }
+					  }
+					  
+			
 					 
 					
 					  return 	idgreivance;
@@ -135,7 +298,10 @@ public class MedicalandGreivanceService {
 
 				VolunteerAssignment va1 = volunteerassignmentrespository.findById(volunteerassignement.getCallid()).get(); 
 				va1.setCallstatusCode(volunteerassignement.getCallstatusCode());
-				va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
+				if(null != volunteerassignement.getCallstatusCode() && volunteerassignement.getCallstatusCode().equals(9)){
+					va1.setRemarks(null != volunteerassignement.getRemarks() ? volunteerassignement.getRemarks() : null);
+				}
+				//va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
 				
 				volunteerassignmentrespository.save(va1);
 			

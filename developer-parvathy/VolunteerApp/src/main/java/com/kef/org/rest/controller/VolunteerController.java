@@ -2,27 +2,27 @@ package com.kef.org.rest.controller;
 
 
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.kef.org.rest.model.GreivanceTracking;
 import com.kef.org.rest.model.LoginInfo;
 import com.kef.org.rest.model.MedicalandGreivance;
 import com.kef.org.rest.model.Volunteer;
-import com.kef.org.rest.model.VolunteerAssignment;  
+import com.kef.org.rest.model.VolunteerAssignment;
+import com.kef.org.rest.repository.GreivanceTrackingRepository;
 import com.kef.org.rest.repository.MedicalandGreivanceRepository;
 import com.kef.org.rest.repository.VolunteerAssignmentRepository;
 import com.kef.org.rest.repository.VolunteerRepository;
@@ -52,6 +52,9 @@ public class VolunteerController
     @Autowired
    	private VolunteerAssignmentRepository volunteerassignmentRespository;
     
+    
+    @Autowired
+   	private GreivanceTrackingRepository greivanceTrackingRepository;
 
     
     @Autowired
@@ -210,7 +213,32 @@ public class VolunteerController
    
 }
     
-    
+    @RequestMapping(value = "/getGreivanceDetails", method = RequestMethod.POST,consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LoginInfo>  fetchGreivanceDetails(@RequestBody GreivanceTracking greivanceTracking)
+    {
+    	LoginInfo loginInfo = new LoginInfo();
+    	List<GreivanceTracking> greivanceTrackingList = new ArrayList<>();
+		
+    	greivanceTrackingList =  greivanceTrackingRepository.findAllbyidvolunteer(greivanceTracking.getIdvolunteer());
+		  if(null != greivanceTrackingList && !greivanceTrackingList.isEmpty()) {
+		  loginInfo.setMessage("Success");
+		  loginInfo.setStatusCode("0"); 
+		  loginInfo.setGreivanceTrackingList(greivanceTrackingList);
+		  return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.OK);
+		  
+		  }else { 
+			  loginInfo.setMessage("Failure"); 
+			  loginInfo.setStatusCode("1"); 
+			  return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.CONFLICT);
+		  
+		  }
+		 
+    	
+    	
+    	
+    	
+    }
 
     
     

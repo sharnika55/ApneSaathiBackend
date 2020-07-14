@@ -1,12 +1,16 @@
 package com.kef.org.rest.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "srcitizen_greivance_log")
@@ -110,9 +114,62 @@ public class MedicalandGreivance {
 	  @Column(name = "loggeddatetime",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	  private LocalDateTime loggeddattime;
 	  
+	  @Column(name = "description", columnDefinition ="varchar(255) default ''")
+	  private String description;
+	  
+	  @Column(name = "createddate", columnDefinition ="TIMESTAMP DEFAULT CURRENT_TIMESTAMP" , nullable =false)
+	  private LocalDateTime createdDate;
+	  
+	  @Column(name = "priority",columnDefinition ="varchar(255) default 'Low'")
+	  private String priority;
+	  
+	  @Column(name = "lastupdatedon", columnDefinition ="TIMESTAMP DEFAULT NULL")
+	  private LocalDateTime lastUpdatedOn;
+	  
+	  
 	  
 	
-	  public Integer getIdgrevance() {
+
+	public LocalDateTime getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(LocalDateTime createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public LocalDateTime getLastUpdatedOn() {
+		return lastUpdatedOn;
+	}
+
+	public void setLastUpdatedOn(LocalDateTime lastUpdatedOn) {
+		this.lastUpdatedOn = lastUpdatedOn;
+	}
+
+	public String getPriority() {
+		return priority;
+	}
+
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+
+
+	@OneToMany(cascade = CascadeType.ALL)
+	  @JoinColumn(name = "IDGREIVANCE")
+	  private List <GreivanceTracking> greivanceTracking;
+	  
+	  
+	
+	  public List<GreivanceTracking> getGreivanceTracking() {
+		return greivanceTracking;
+	}
+
+	public void setGreivanceTracking(List<GreivanceTracking> greivanceTracking) {
+		this.greivanceTracking = greivanceTracking;
+	}
+
+	public Integer getIdgrevance() {
 		return idgrevance;
 	}
 
@@ -345,6 +402,14 @@ public class MedicalandGreivance {
 
 	public void setLoggeddattime(LocalDateTime loggeddattime) {
 		this.loggeddattime = loggeddattime;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	
