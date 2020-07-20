@@ -22,6 +22,9 @@ query = "SELECT v.idvolunteer FROM Volunteer v WHERE v.phoneNo =?1 "
 ),
 @NamedQuery(name = "Volunteer.fetchVolunteerDetails",
 query = "SELECT v FROM Volunteer v WHERE v.phoneNo =?1 "
+),
+@NamedQuery(name = "Volunteer.findbyidvolunteer",
+query = "SELECT v FROM Volunteer v WHERE v.idvolunteer =:idvolunteer "
 )
 }) 
 public class Volunteer  {
@@ -60,7 +63,7 @@ private Integer idvolunteer;
 	private String Block;
 	
 	@Column(name="ADDRESS")
-	private String Address;
+	private String address;
 	
 	@Column(name="VILLAGE")
 	private String Village;
@@ -170,12 +173,12 @@ public void setVolunteercallList(List<VolunteerAssignment> volunteercallList) {
 
 
 	public String getAddress() {
-		return Address;
+		return address;
 	}
 
 
 	public void setAddress(String address) {
-		Address = address;
+		this.address = address;
 	}
 
 

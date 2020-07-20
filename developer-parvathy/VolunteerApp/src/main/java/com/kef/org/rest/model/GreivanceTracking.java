@@ -18,6 +18,9 @@ import org.hibernate.annotations.NamedQuery;
 @NamedQueries({
 @NamedQuery(name = "GreivanceTracking.findAllbyidvolunteer",
 query = "SELECT g FROM GreivanceTracking g WHERE g.idvolunteer =:idvolunteer"
+),
+@NamedQuery(name = "GreivanceTracking.findbytrackingid",
+query = "SELECT g FROM GreivanceTracking g WHERE g.trackingId =:trackingId "
 )
 }) 
 public class GreivanceTracking {
@@ -61,8 +64,54 @@ public class GreivanceTracking {
 	  @Column(name = "lastupdatedon", columnDefinition ="TIMESTAMP DEFAULT NULL")
 	  private LocalDateTime lastUpdatedOn;
 	  
+	  
+	  @Column(name = "underreviewdate", columnDefinition ="TIMESTAMP DEFAULT NULL")
+	  private LocalDateTime underReviewDate;
+	  
+	  @Column(name = "resolveddate", columnDefinition ="TIMESTAMP DEFAULT NULL")
+	  private LocalDateTime resolvedDate;
+	  
+	  @Column(name = "underreviewremarks", columnDefinition ="varchar(45) default ''")
+	  private String underReviewRemarks;
+	  
+	  @Column(name = "resolvedremarks", columnDefinition ="varchar(45) default ''")
+	  private String resolvedRemarks;
+	  
+	  
 
 	
+
+	public LocalDateTime getUnderReviewDate() {
+		return underReviewDate;
+	}
+
+	public void setUnderReviewDate(LocalDateTime underReviewDate) {
+		this.underReviewDate = underReviewDate;
+	}
+
+	public LocalDateTime getResolvedDate() {
+		return resolvedDate;
+	}
+
+	public void setResolvedDate(LocalDateTime resolvedDate) {
+		this.resolvedDate = resolvedDate;
+	}
+
+	public String getUnderReviewRemarks() {
+		return underReviewRemarks;
+	}
+
+	public void setUnderReviewRemarks(String underReviewRemarks) {
+		this.underReviewRemarks = underReviewRemarks;
+	}
+
+	public String getResolvedRemarks() {
+		return resolvedRemarks;
+	}
+
+	public void setResolvedRemarks(String resolvedRemarks) {
+		this.resolvedRemarks = resolvedRemarks;
+	}
 
 	public String getPriority() {
 		return priority;

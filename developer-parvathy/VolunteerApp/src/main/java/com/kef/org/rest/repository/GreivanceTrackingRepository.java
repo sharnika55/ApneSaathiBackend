@@ -11,5 +11,7 @@ import com.kef.org.rest.model.GreivanceTracking;
 public interface GreivanceTrackingRepository extends JpaRepository<GreivanceTracking, Integer>{
 	
 	List<GreivanceTracking> findAllbyidvolunteer(Integer idvolunteer);
+	
+	GreivanceTracking findbytrackingid(Integer trackingId);
 
 }

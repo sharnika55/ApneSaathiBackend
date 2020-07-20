@@ -2,6 +2,7 @@ package com.kef.org.rest.controller;
 
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -239,8 +240,142 @@ public class VolunteerController
     	
     	
     }
-
     
+    @RequestMapping(value = "/updateGreivanceDetails", method = RequestMethod.PUT,consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LoginInfo>  updateGreivanceDetails(@RequestBody GreivanceTracking greivanceTracking)
+    {
+    	LoginInfo loginInfo = new LoginInfo();
+    	GreivanceTracking greivanceTrack = new GreivanceTracking();
+    	MedicalandGreivance mg1 = new MedicalandGreivance();
+    	Optional<MedicalandGreivance> medicalandGreivance;
+		
+    	greivanceTrack =  greivanceTrackingRepository.findbytrackingid(greivanceTracking.getTrackingId());
+		  if(null != greivanceTrack) {
+			  greivanceTrack.setStatus(greivanceTracking.getStatus());
+			  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+				  greivanceTrack.setDescription(greivanceTracking.getDescription());
+				  greivanceTrack.setCreatedDate(LocalDateTime.now());
+			  }
+			  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+				  greivanceTrack.setUnderReviewRemarks(greivanceTracking.getDescription());
+				  greivanceTrack.setUnderReviewDate(LocalDateTime.now());
+			  }
+			  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+				  greivanceTrack.setResolvedRemarks(greivanceTracking.getDescription());
+				  greivanceTrack.setResolvedDate(LocalDateTime.now());
+			  }
+			  greivanceTrack.setLastUpdatedOn(LocalDateTime.now());
+			  greivanceTrackingRepository.save(greivanceTrack);
+			  
+			  medicalandGreivance = medicalandgreivanceRespository.findById(greivanceTrack.getIdgrevance());
+			  if(medicalandGreivance.isPresent()) {
+				  mg1=medicalandGreivance.get();
+				  if("Lack of food".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setFoodshortage(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of access to banking services".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setAceesstobankingissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of hygiene and sanitation".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setHygieneissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of medicine".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setMedicineshortage(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Phone & Internet services".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setPhoneandinternetissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of Safety".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setSafetyissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of utilities supply".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setUtilitysupplyissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  if("Lack of access to emergency services".equalsIgnoreCase(greivanceTracking.getGreivanceType())) {
+						mg1.setEmergencyserviceissue(greivanceTracking.getStatus().equalsIgnoreCase("RAISED") ? 1
+								: greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW") ? 2
+										: greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED") ? 3 : 4);
+						mg1.setDescription(greivanceTracking.getDescription());
+						mg1.setLastUpdatedOn(LocalDateTime.now());
+				  }
+				  medicalandgreivanceRespository.save(mg1);
+			  }
+			  
+			  
+		  loginInfo.setMessage("Success");
+		  loginInfo.setStatusCode("0"); 
+		  
+		  return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.OK);
+		  
+		  }else { 
+			  loginInfo.setMessage("Failure"); 
+			  loginInfo.setStatusCode("1"); 
+			  return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.CONFLICT);
+		  
+		  }
+		 
+    	
+    	
+    	
+    	
+    }
+
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.PUT,consumes = "application/json", produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<LoginInfo>  updateProfile(@RequestBody Volunteer volunteer)
+    {
+    	
+    	LoginInfo loginInfo = new LoginInfo();
+    	Optional<Volunteer> volunteer1 = volunteerRespository.findById(volunteer.getIdvolunteer());
+    	if(volunteer1.isPresent()) {
+    		Volunteer vol = new Volunteer();
+    		vol = volunteer1.get();
+    		vol.setFirstName(null != volunteer.getFirstName() ? volunteer.getFirstName() : vol.getFirstName());
+    		vol.setAddress(null != volunteer.getAddress() ? volunteer.getAddress() : vol.getAddress());
+    		vol.setEmail(null != volunteer.getEmail() ? volunteer.getEmail() : vol.getEmail());
+    		
+    		volunteerRespository.save(vol);
+    	
+    	loginInfo.setMessage("Success"); 
+		loginInfo.setStatusCode("0");
+		 return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.OK);
+    	}else { 
+			  loginInfo.setMessage("Failure"); 
+			  loginInfo.setStatusCode("1"); 
+			  return new ResponseEntity<LoginInfo>(loginInfo, HttpStatus.CONFLICT);
+		  
+		  }
+   
+}
     
     
 

@@ -69,6 +69,7 @@ public class MedicalandGreivanceService {
 			VolunteerAssignment va1 = volunteerassignmentrespository.findById(volunteerassignement.getCallid()).get(); 
 			va1.setCallstatusCode(volunteerassignement.getCallstatusCode());
 			//va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
+			va1.setLoggeddateTime(LocalDateTime.now());
 			va1.setTalkedwith(volunteerassignement.getTalkedwith());
 			
 			
@@ -97,11 +98,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of food");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getFoodshortage() ? "RAISED" : 
 								  2 == medicalandgreivance.getFoodshortage() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -114,11 +125,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of access to banking services");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getAceesstobankingissue() ? "RAISED" : 
 								  2 == medicalandgreivance.getAceesstobankingissue() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -148,11 +169,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of medicine");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getMedicineshortage() ? "RAISED" : 
 								  2 == medicalandgreivance.getMedicineshortage() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -165,11 +196,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Phone & Internet services");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getPhoneandinternetissue() ? "RAISED" : 
 								  2 == medicalandgreivance.getPhoneandinternetissue() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -182,11 +223,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of Safety");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getSafetyissue() ? "RAISED" : 
 								  2 == medicalandgreivance.getSafetyissue() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -199,11 +250,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of utilities supply");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
 							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getUtilitysupplyissue() ? "RAISED" : 
 								  2 == medicalandgreivance.getUtilitysupplyissue() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 							  
 						  }
@@ -216,11 +277,21 @@ public class MedicalandGreivanceService {
 							  greivanceTracking.setGreivanceType("Lack of access to emergency services");
 							  greivanceTracking.setIdvolunteer(volunteerassignement.getIdvolunteer());
 							  greivanceTracking.setNamesrcitizen(volunteerassignement.getNamesrcitizen());
-							  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
-							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "High" : "Low");
-							  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  greivanceTracking.setPriority("Y".equalsIgnoreCase(medicalandgreivance.getIsemergencyservicerequired()) ? "Emergency" : "Regular");
 							  greivanceTracking.setStatus(1 == medicalandgreivance.getEmergencyserviceissue() ? "RAISED" : 
 								  2 == medicalandgreivance.getEmergencyserviceissue() ? "UNDER REVIEW" : "RESOLVED");
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RAISED")) {
+								  greivanceTracking.setDescription(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setCreatedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("UNDER REVIEW")) {
+								  greivanceTracking.setUnderReviewRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setUnderReviewDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
+							  if(greivanceTracking.getStatus().equalsIgnoreCase("RESOLVED")) {
+								  greivanceTracking.setResolvedRemarks(null != medicalandgreivance.getDescription() ? medicalandgreivance.getDescription() : null);
+								  greivanceTracking.setResolvedDate(null != medicalandgreivance.getCreatedDate() ? medicalandgreivance.getCreatedDate() : LocalDateTime.now());
+							  }
 							  greivanceTrackingList.add(greivanceTracking);
 						  }
 						  
@@ -301,6 +372,7 @@ public class MedicalandGreivanceService {
 				if(null != volunteerassignement.getCallstatusCode() && volunteerassignement.getCallstatusCode().equals(9)){
 					va1.setRemarks(null != volunteerassignement.getRemarks() ? volunteerassignement.getRemarks() : null);
 				}
+				va1.setLoggeddateTime(LocalDateTime.now());
 				//va1.setCallstatussubCode(volunteerassignement.getCallstatussubCode());
 				
 				volunteerassignmentrespository.save(va1);
