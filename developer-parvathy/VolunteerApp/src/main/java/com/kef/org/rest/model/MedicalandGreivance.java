@@ -130,7 +130,18 @@ public class MedicalandGreivance {
 	  @Column(name = "lastupdatedon", columnDefinition ="TIMESTAMP DEFAULT NULL")
 	  private LocalDateTime lastUpdatedOn;
 	  
+	  @Column(name = "is_sr_citizen_aware_of_covid_19",columnDefinition ="varchar(2) default 'N'")
+	  private String isSrCitizenAwareOfCovid_19;
 	  
+	  @Column(name = "is_symptoms_prevention_taken",columnDefinition ="varchar(2) default 'N'")
+	  private String isSymptomsPreventionTaken;
+	  
+	  @Column(name = "practice_not_allowed",columnDefinition ="varchar(255) default NULL")
+	  private String practiceNotAllowed;
+	  
+	  @OneToMany(cascade = CascadeType.ALL)
+	  @JoinColumn(name = "IDGREIVANCE")
+	  private List <GreivanceTracking> greivanceTracking;
 	  
 	
 
@@ -140,6 +151,30 @@ public class MedicalandGreivance {
 
 	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
+	}
+
+	public String getIsSrCitizenAwareOfCovid_19() {
+		return isSrCitizenAwareOfCovid_19;
+	}
+
+	public void setIsSrCitizenAwareOfCovid_19(String isSrCitizenAwareOfCovid_19) {
+		this.isSrCitizenAwareOfCovid_19 = isSrCitizenAwareOfCovid_19;
+	}
+
+	public String getIsSymptomsPreventionTaken() {
+		return isSymptomsPreventionTaken;
+	}
+
+	public void setIsSymptomsPreventionTaken(String isSymptomsPreventionTaken) {
+		this.isSymptomsPreventionTaken = isSymptomsPreventionTaken;
+	}
+
+	public String getPracticeNotAllowed() {
+		return practiceNotAllowed;
+	}
+
+	public void setPracticeNotAllowed(String practiceNotAllowed) {
+		this.practiceNotAllowed = practiceNotAllowed;
 	}
 
 	public LocalDateTime getLastUpdatedOn() {
@@ -158,12 +193,6 @@ public class MedicalandGreivance {
 		this.priority = priority;
 	}
 
-
-	@OneToMany(cascade = CascadeType.ALL)
-	  @JoinColumn(name = "IDGREIVANCE")
-	  private List <GreivanceTracking> greivanceTracking;
-	  
-	  
 	
 	  public List<GreivanceTracking> getGreivanceTracking() {
 		return greivanceTracking;

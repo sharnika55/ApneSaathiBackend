@@ -360,6 +360,7 @@ public class VolunteerController
     		Volunteer vol = new Volunteer();
     		vol = volunteer1.get();
     		vol.setFirstName(null != volunteer.getFirstName() ? volunteer.getFirstName() : vol.getFirstName());
+    		vol.setLastName(null != volunteer.getLastName() ? volunteer.getLastName() : vol.getLastName());
     		vol.setAddress(null != volunteer.getAddress() ? volunteer.getAddress() : vol.getAddress());
     		vol.setEmail(null != volunteer.getEmail() ? volunteer.getEmail() : vol.getEmail());
     		

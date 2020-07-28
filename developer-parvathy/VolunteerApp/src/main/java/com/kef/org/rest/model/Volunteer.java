@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 
 
 @Entity
@@ -76,6 +77,10 @@ private Integer idvolunteer;
 	@Column(name="ASSIGNED_TO_FELLOW_CONTACT")
 	private String assignedtoFellowContact;
 	
+	@Lob
+	@Column(name="pic")
+	private byte[] pic;
+	
 	
  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
  @JoinColumn(name = "idvolunteer")
@@ -85,6 +90,12 @@ private Integer idvolunteer;
 	public Integer getIdvolunteer() {
 	return idvolunteer;
 }
+public byte[] getPic() {
+		return pic;
+	}
+	public void setPic(byte[] pic) {
+		this.pic = pic;
+	}
 public void setIdvolunteer(Integer idvolunteer) {
 	this.idvolunteer = idvolunteer;
 }
